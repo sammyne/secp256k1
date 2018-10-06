@@ -136,28 +136,6 @@ type fieldVal struct {
 	n [10]uint32
 }
 
-// String returns the field value as a human-readable hex string.
-func (f fieldVal) String() string {
-	t := new(fieldVal).Set(&f).Normalize()
-	return hex.EncodeToString(t.Bytes()[:])
-}
-
-// Zero sets the field value to zero.  A newly created field value is already
-// set to zero.  This function can be useful to clear an existing field value
-// for reuse.
-func (f *fieldVal) Zero() {
-	f.n[0] = 0
-	f.n[1] = 0
-	f.n[2] = 0
-	f.n[3] = 0
-	f.n[4] = 0
-	f.n[5] = 0
-	f.n[6] = 0
-	f.n[7] = 0
-	f.n[8] = 0
-	f.n[9] = 0
-}
-
 // Set sets the field value equal to the passed value.
 //
 // The field value is returned to support chaining.  This enables syntax like:
@@ -165,18 +143,6 @@ func (f *fieldVal) Zero() {
 // modified.
 func (f *fieldVal) Set(val *fieldVal) *fieldVal {
 	*f = *val
-	return f
-}
-
-// SetInt sets the field value to the passed integer.  This is a convenience
-// function since it is fairly common to perform some arithemetic with small
-// native integers.
-//
-// The field value is returned to support chaining.  This enables syntax such
-// as f := new(fieldVal).SetInt(2).Mul(f2) so that f = 2 * f2.
-func (f *fieldVal) SetInt(ui uint) *fieldVal {
-	f.Zero()
-	f.n[0] = uint32(ui)
 	return f
 }
 
@@ -240,6 +206,40 @@ func (f *fieldVal) SetHex(hexString string) *fieldVal {
 	}
 	bytes, _ := hex.DecodeString(hexString)
 	return f.SetByteSlice(bytes)
+}
+
+// SetInt sets the field value to the passed integer.  This is a convenience
+// function since it is fairly common to perform some arithemetic with small
+// native integers.
+//
+// The field value is returned to support chaining.  This enables syntax such
+// as f := new(fieldVal).SetInt(2).Mul(f2) so that f = 2 * f2.
+func (f *fieldVal) SetInt(ui uint) *fieldVal {
+	f.Zero()
+	f.n[0] = uint32(ui)
+	return f
+}
+
+// String returns the field value as a human-readable hex string.
+func (f fieldVal) String() string {
+	t := new(fieldVal).Set(&f).Normalize()
+	return hex.EncodeToString(t.Bytes()[:])
+}
+
+// Zero sets the field value to zero.  A newly created field value is already
+// set to zero.  This function can be useful to clear an existing field value
+// for reuse.
+func (f *fieldVal) Zero() {
+	f.n[0] = 0
+	f.n[1] = 0
+	f.n[2] = 0
+	f.n[3] = 0
+	f.n[4] = 0
+	f.n[5] = 0
+	f.n[6] = 0
+	f.n[7] = 0
+	f.n[8] = 0
+	f.n[9] = 0
 }
 
 // Normalize normalizes the internal field words into the desired range and
