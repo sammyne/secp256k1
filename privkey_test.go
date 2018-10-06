@@ -7,6 +7,8 @@ package secp256k1
 import (
 	"bytes"
 	"testing"
+
+	"github.com/sammy00/secp256k1/koblitz"
 )
 
 func TestPrivKeys(t *testing.T) {
@@ -26,9 +28,9 @@ func TestPrivKeys(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		priv, pub := PrivKeyFromBytes(S256(), test.key)
+		priv, pub := PrivKeyFromBytes(koblitz.S256(), test.key)
 
-		_, err := ParsePubKey(pub.SerializeUncompressed(), S256())
+		_, err := ParsePubKey(pub.SerializeUncompressed(), koblitz.S256())
 		if err != nil {
 			t.Errorf("%s privkey: %v", test.name, err)
 			continue

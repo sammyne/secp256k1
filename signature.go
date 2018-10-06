@@ -14,6 +14,8 @@ import (
 	"fmt"
 	"hash"
 	"math/big"
+
+	"github.com/sammy00/secp256k1/koblitz"
 )
 
 // Errors returned by canonicalPadding.
@@ -47,9 +49,10 @@ var (
 func (sig *Signature) Serialize() []byte {
 	// low 'S' malleability breaker
 	sigS := sig.S
-	if sigS.Cmp(S256().halfOrder) == 1 {
-		sigS = new(big.Int).Sub(S256().N, sigS)
-	}
+	// TODO: export the halfOrder
+	//if sigS.Cmp(koblitz.S256().halfOrder) == 1 {
+	//	sigS = new(big.Int).Sub(S256().N, sigS)
+	//}
 	// Ensure the encoded bytes for the r and s values are canonical and
 	// thus suitable for DER encoding.
 	rb := canonicalizeInt(sig.R)
@@ -282,7 +285,7 @@ func hashToInt(hash []byte, c elliptic.Curve) *big.Int {
 // of the loop * 2 - on the first iteration of j we do the R case, else the -R
 // case in step 1.6. This counter is used in the bitcoin compressed signature
 // format and thus we match bitcoind's behaviour here.
-func recoverKeyFromSignature(curve *KoblitzCurve, sig *Signature, msg []byte,
+func recoverKeyFromSignature(curve *koblitz.KoblitzCurve, sig *Signature, msg []byte,
 	iter int, doChecks bool) (*PublicKey, error) {
 	// 1.1 x = (n * i) + r
 	Rx := new(big.Int).Mul(curve.Params().N,
@@ -348,7 +351,7 @@ func recoverKeyFromSignature(curve *KoblitzCurve, sig *Signature, msg []byte,
 // returned in the format:
 // <(byte of 27+public key solution)+4 if compressed >< padded bytes for signature R><padded bytes for signature S>
 // where the R and S parameters are padde up to the bitlengh of the curve.
-func SignCompact(curve *KoblitzCurve, key *PrivateKey,
+func SignCompact(curve *koblitz.KoblitzCurve, key *PrivateKey,
 	hash []byte, isCompressedKey bool) ([]byte, error) {
 	sig, err := key.Sign(hash)
 	if err != nil {
@@ -361,7 +364,9 @@ func SignCompact(curve *KoblitzCurve, key *PrivateKey,
 	for i := 0; i < (curve.H+1)*2; i++ {
 		pk, err := recoverKeyFromSignature(curve, sig, hash, i, true)
 		if err == nil && pk.X.Cmp(key.X) == 0 && pk.Y.Cmp(key.Y) == 0 {
-			result := make([]byte, 1, 2*curve.byteSize+1)
+			// TODO: export the byteSize
+			// result := make([]byte, 1, 2*curve.byteSize+1)
+			result := make([]byte, 1, 2*32+1)
 			result[0] = 27 + byte(i)
 			if isCompressedKey {
 				result[0] += 4
@@ -395,7 +400,7 @@ func SignCompact(curve *KoblitzCurve, key *PrivateKey,
 // Koblitz curve in "curve". If the signature matches then the recovered public
 // key will be returned as well as a boolen if the original key was compressed
 // or not, else an error will be returned.
-func RecoverCompact(curve *KoblitzCurve, signature,
+func RecoverCompact(curve *koblitz.KoblitzCurve, signature,
 	hash []byte) (*PublicKey, bool, error) {
 	bitlen := (curve.BitSize + 7) / 8
 	if len(signature) != 1+bitlen*2 {
@@ -422,8 +427,11 @@ func RecoverCompact(curve *KoblitzCurve, signature,
 func signRFC6979(privateKey *PrivateKey, hash []byte) (*Signature, error) {
 
 	privkey := privateKey.ToECDSA()
-	N := S256().N
-	halfOrder := S256().halfOrder
+	N := koblitz.S256().N
+	// TODO: export the halfOrder
+	//halfOrder := koblitz.S256().halfOrder
+	halfOrder := new(big.Int).Rsh(koblitz.S256().N, 1)
+
 	k := nonceRFC6979(privkey.D, hash)
 	inv := new(big.Int).ModInverse(k, N)
 	r, _ := privkey.Curve.ScalarBaseMult(k.Bytes())
@@ -454,7 +462,7 @@ func signRFC6979(privateKey *PrivateKey, hash []byte) (*Signature, error) {
 // It takes a 32-byte hash as an input and returns 32-byte nonce to be used in ECDSA algorithm.
 func nonceRFC6979(privkey *big.Int, hash []byte) *big.Int {
 
-	curve := S256()
+	curve := koblitz.S256()
 	q := curve.Params().N
 	x := privkey
 	alg := sha256.New

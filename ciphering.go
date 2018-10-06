@@ -14,6 +14,8 @@ import (
 	"crypto/sha512"
 	"errors"
 	"io"
+
+	"github.com/sammy00/secp256k1/koblitz"
 )
 
 var (
@@ -68,7 +70,7 @@ func GenerateSharedSecret(privkey *PrivateKey, pubkey *PublicKey) []byte {
 // The primary aim is to ensure byte compatibility with Pyelliptic.  Also, refer
 // to section 5.8.1 of ANSI X9.63 for rationale on this format.
 func Encrypt(pubkey *PublicKey, in []byte) ([]byte, error) {
-	ephemeral, err := NewPrivateKey(S256())
+	ephemeral, err := NewPrivateKey(koblitz.S256())
 	if err != nil {
 		return nil, err
 	}
@@ -155,7 +157,7 @@ func Decrypt(priv *PrivateKey, in []byte) ([]byte, error) {
 	copy(pb[1:33], xBytes)
 	copy(pb[33:], yBytes)
 	// check if (X, Y) lies on the curve and create a Pubkey if it does
-	pubkey, err := ParsePubKey(pb, S256())
+	pubkey, err := ParsePubKey(pb, koblitz.S256())
 	if err != nil {
 		return nil, err
 	}

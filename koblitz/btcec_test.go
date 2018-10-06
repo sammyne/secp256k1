@@ -4,7 +4,7 @@
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-package secp256k1
+package koblitz
 
 import (
 	"crypto/rand"
@@ -775,6 +775,7 @@ func TestSplitKRand(t *testing.T) {
 	}
 }
 
+/*
 // Test this curve's usage with the ecdsa package.
 
 func testKeyGeneration(t *testing.T, c *KoblitzCurve, tag string) {
@@ -816,6 +817,7 @@ func testSignAndVerify(t *testing.T, c *KoblitzCurve, tag string) {
 func TestSignAndVerify(t *testing.T) {
 	testSignAndVerify(t, S256(), "S256")
 }
+*/
 
 func TestNAF(t *testing.T) {
 	tests := []string{

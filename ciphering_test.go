@@ -8,15 +8,17 @@ import (
 	"bytes"
 	"encoding/hex"
 	"testing"
+
+	"github.com/sammy00/secp256k1/koblitz"
 )
 
 func TestGenerateSharedSecret(t *testing.T) {
-	privKey1, err := NewPrivateKey(S256())
+	privKey1, err := NewPrivateKey(koblitz.S256())
 	if err != nil {
 		t.Errorf("private key generation error: %s", err)
 		return
 	}
-	privKey2, err := NewPrivateKey(S256())
+	privKey2, err := NewPrivateKey(koblitz.S256())
 	if err != nil {
 		t.Errorf("private key generation error: %s", err)
 		return
@@ -33,7 +35,7 @@ func TestGenerateSharedSecret(t *testing.T) {
 
 // Test 1: Encryption and decryption
 func TestCipheringBasic(t *testing.T) {
-	privkey, err := NewPrivateKey(S256())
+	privkey, err := NewPrivateKey(koblitz.S256())
 	if err != nil {
 		t.Fatal("failed to generate private key")
 	}
@@ -59,7 +61,7 @@ func TestCipheringBasic(t *testing.T) {
 func TestCiphering(t *testing.T) {
 	pb, _ := hex.DecodeString("fe38240982f313ae5afb3e904fb8215fb11af1200592b" +
 		"fca26c96c4738e4bf8f")
-	privkey, _ := PrivKeyFromBytes(S256(), pb)
+	privkey, _ := PrivKeyFromBytes(koblitz.S256(), pb)
 
 	in := []byte("This is just a test.")
 	out, _ := hex.DecodeString("b0d66e5adaa5ed4e2f0ca68e17b8f2fc02ca002009e3" +
@@ -79,7 +81,7 @@ func TestCiphering(t *testing.T) {
 }
 
 func TestCipheringErrors(t *testing.T) {
-	privkey, err := NewPrivateKey(S256())
+	privkey, err := NewPrivateKey(koblitz.S256())
 	if err != nil {
 		t.Fatal("failed to generate private key")
 	}

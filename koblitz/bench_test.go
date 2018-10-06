@@ -2,7 +2,7 @@
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-package secp256k1
+package koblitz
 
 import "testing"
 
@@ -82,6 +82,7 @@ func BenchmarkNAF(b *testing.B) {
 	}
 }
 
+/*
 // BenchmarkSigVerify benchmarks how long it takes the secp256k1 curve to
 // verify signatures.
 func BenchmarkSigVerify(b *testing.B) {
@@ -110,7 +111,7 @@ func BenchmarkSigVerify(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		sig.Verify(msgHash.Bytes(), &pubKey)
 	}
-}
+}*/
 
 // BenchmarkFieldNormalize benchmarks how long it takes the internal field
 // to perform normalization (which includes modular reduction).
