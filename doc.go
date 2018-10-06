@@ -18,4 +18,4 @@ standard formats.  It was designed for use with btcd, but should be
 general enough for other uses of elliptic curve crypto.  It was originally based
 on some initial work by ThePiachu, but has significantly diverged since then.
 */
-package btcec
+package secp256k1
