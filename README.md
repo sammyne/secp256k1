@@ -5,6 +5,11 @@ btcec
 [![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](http://copyfree.org)
 [![GoDoc](https://godoc.org/github.com/btcsuite/btcd/btcec?status.png)](http://godoc.org/github.com/btcsuite/btcd/btcec)
 
+[![CircleCI](https://circleci.com/gh/sammy00/secp256k1.svg?style=svg)](https://circleci.com/gh/sammy00/secp256k1) 
+[![codecov](https://codecov.io/gh/sammy00/secp256k1/branch/master/graph/badge.svg)](https://codecov.io/gh/sammy00/secp256k1) 
+[![Go Report Card](https://goreportcard.com/badge/github.com/sammy00/secp256k1)](https://goreportcard.com/report/github.com/sammy00/secp256k1) 
+[![LICENSE](https://img.shields.io/badge/license-ISC-blue.svg)](LICENSE)
+
 Package btcec implements elliptic curve cryptography needed for working with
 Bitcoin (secp256k1 only for now). It is designed so that it may be used with the
 standard crypto/ecdsa packages provided with go.  A comprehensive suite of test
