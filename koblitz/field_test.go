@@ -47,6 +47,9 @@ func TestZero(t *testing.T) {
 				"zero - got %d", idx, rawInt)
 		}
 	}
+	//if f.n != [fieldWords]uint32{} {
+	//	t.Fatalf("got %x, expect 0", f.n[:])
+	//}
 }
 
 // TestIsZero ensures that checking if a field IsZero works as expected.
