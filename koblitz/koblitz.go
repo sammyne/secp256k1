@@ -38,7 +38,7 @@ type KoblitzCurve struct {
 	*elliptic.CurveParams
 	q         *big.Int
 	H         int      // cofactor of the curve.
-	halfOrder *big.Int // half the order N
+	HalfOrder *big.Int // half the order N
 
 	// byteSize is simply the bit size / 8 and is provided for convenience
 	// since it is calculated repeatedly.
@@ -307,6 +307,12 @@ func (curve *KoblitzCurve) ScalarMult(Bx, By *big.Int, k []byte) (*big.Int, *big
 	return curve.fieldJacobianToBigAffine(qx, qy, qz)
 }
 
+// QPlus1Div4 returns the Q+1/4 constant for the curve for use in calculating
+// square roots via exponention.
+func (curve *KoblitzCurve) QPlus1Div4() *big.Int {
+	return curve.q
+}
+
 // ScalarBaseMult returns k*G where G is the base point of the group and k is a
 // big endian integer.
 // Part of the elliptic.Curve interface.
@@ -329,29 +335,11 @@ func (curve *KoblitzCurve) ScalarBaseMult(k []byte) (*big.Int, *big.Int) {
 	return curve.fieldJacobianToBigAffine(qx, qy, qz)
 }
 
-// QPlus1Div4 returns the Q+1/4 constant for the curve for use in calculating
-// square roots via exponention.
-func (curve *KoblitzCurve) QPlus1Div4() *big.Int {
-	return curve.q
-}
-
 var initonce sync.Once
 var secp256k1 KoblitzCurve
 
 func initAll() {
 	initS256()
-}
-
-// fromHex converts the passed hex string into a big integer pointer and will
-// panic is there is an error.  This is only provided for the hard-coded
-// constants so errors in the source code can bet detected. It will only (and
-// must only) be called for initialization purposes.
-func fromHex(s string) *big.Int {
-	r, ok := new(big.Int).SetString(s, 16)
-	if !ok {
-		panic("invalid hex in source file: " + s)
-	}
-	return r
 }
 
 func initS256() {
@@ -366,7 +354,7 @@ func initS256() {
 	secp256k1.q = new(big.Int).Div(new(big.Int).Add(secp256k1.P,
 		big.NewInt(1)), big.NewInt(4))
 	secp256k1.H = 1
-	secp256k1.halfOrder = new(big.Int).Rsh(secp256k1.N, 1)
+	secp256k1.HalfOrder = new(big.Int).Rsh(secp256k1.N, 1)
 
 	// Provided for convenience since this gets computed repeatedly.
 	secp256k1.byteSize = secp256k1.BitSize / 8

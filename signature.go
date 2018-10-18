@@ -49,10 +49,9 @@ var (
 func (sig *Signature) Serialize() []byte {
 	// low 'S' malleability breaker
 	sigS := sig.S
-	// TODO: export the halfOrder
-	//if sigS.Cmp(koblitz.S256().halfOrder) == 1 {
-	//	sigS = new(big.Int).Sub(S256().N, sigS)
-	//}
+	if sigS.Cmp(koblitz.S256().HalfOrder) == 1 {
+		sigS = new(big.Int).Sub(koblitz.S256().N, sigS)
+	}
 	// Ensure the encoded bytes for the r and s values are canonical and
 	// thus suitable for DER encoding.
 	rb := canonicalizeInt(sig.R)
@@ -364,9 +363,7 @@ func SignCompact(curve *koblitz.KoblitzCurve, key *PrivateKey,
 	for i := 0; i < (curve.H+1)*2; i++ {
 		pk, err := recoverKeyFromSignature(curve, sig, hash, i, true)
 		if err == nil && pk.X.Cmp(key.X) == 0 && pk.Y.Cmp(key.Y) == 0 {
-			// TODO: export the byteSize
-			// result := make([]byte, 1, 2*curve.byteSize+1)
-			result := make([]byte, 1, 2*32+1)
+			result := make([]byte, 1, 2*(curve.BitSize>>3)+1)
 			result[0] = 27 + byte(i)
 			if isCompressedKey {
 				result[0] += 4
@@ -428,9 +425,7 @@ func signRFC6979(privateKey *PrivateKey, hash []byte) (*Signature, error) {
 
 	privkey := privateKey.ToECDSA()
 	N := koblitz.S256().N
-	// TODO: export the halfOrder
-	//halfOrder := koblitz.S256().halfOrder
-	halfOrder := new(big.Int).Rsh(koblitz.S256().N, 1)
+	halfOrder := koblitz.S256().HalfOrder
 
 	k := nonceRFC6979(privkey.D, hash)
 	inv := new(big.Int).ModInverse(k, N)

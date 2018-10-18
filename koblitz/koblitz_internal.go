@@ -497,6 +497,18 @@ func (curve *KoblitzCurve) fieldJacobianToBigAffine(x, y,
 	return x3, y3
 }
 
+// fromHex converts the passed hex string into a big integer pointer and will
+// panic is there is an error.  This is only provided for the hard-coded
+// constants so errors in the source code can bet detected. It will only (and
+// must only) be called for initialization purposes.
+func fromHex(s string) *big.Int {
+	r, ok := new(big.Int).SetString(s, 16)
+	if !ok {
+		panic("invalid hex in source file: " + s)
+	}
+	return r
+}
+
 // splitK returns a balanced length-two representation of k and their signs.
 // This is algorithm 3.74 from [GECC].
 //
