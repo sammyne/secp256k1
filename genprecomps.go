@@ -17,7 +17,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/btcsuite/btcec"
+	"github.com/sammyne/secp256k1"
 )
 
 func main() {

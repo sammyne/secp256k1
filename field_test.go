@@ -9,7 +9,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/btcsuite/btcec"
+	"github.com/sammyne/secp256k1"
 )
 
 // TestSetInt ensures that setting a field value to various native integers

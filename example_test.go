@@ -5,11 +5,11 @@
 package btcec_test
 
 import (
+	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
 
-	"github.com/btcsuite/btcd/wire"
-	"github.com/btcsuite/btcec"
+	btcec "github.com/sammyne/secp256k1"
 )
 
 // This example demonstrates signing a message with a secp256k1 private key that
@@ -26,8 +26,8 @@ func Example_signMessage() {
 
 	// Sign a message using the private key.
 	message := "test message"
-	messageHash := wire.DoubleSha256([]byte(message))
-	signature, err := privKey.Sign(messageHash)
+	messageHash := sha256.Sum256([]byte(message))
+	signature, err := privKey.Sign(messageHash[:])
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -40,7 +40,7 @@ func Example_signMessage() {
 	//fmt.Printf("Serialized Signature: %x\n", signature.Serialize())
 
 	// Verify the signature for the message using the public key.
-	verified := signature.Verify(messageHash, pubKey)
+	verified := signature.Verify(messageHash[:], pubKey)
 	fmt.Printf("Signature Verified? %v\n", verified)
 
 	// Output:
@@ -80,8 +80,9 @@ func Example_verifySignature() {
 
 	// Verify the signature for the message using the public key.
 	message := "test message"
-	messageHash := wire.DoubleSha256([]byte(message))
-	verified := signature.Verify(messageHash, pubKey)
+	messageHash := sha256.Sum256([]byte(message))
+	messageHash = sha256.Sum256(messageHash[:])
+	verified := signature.Verify(messageHash[:], pubKey)
 	fmt.Println("Signature Verified?", verified)
 
 	// Output:

@@ -1,10 +1,10 @@
 btcec
 =====
 
-[![Build Status](https://travis-ci.org/btcsuite/btcec.png?branch=master)]
-(https://travis-ci.org/btcsuite/btcec) [![Coverage Status]
-(https://coveralls.io/repos/btcsuite/btcec/badge.png?branch=master)]
-(https://coveralls.io/r/btcsuite/btcec?branch=master)
+[![Build Status](https://travis-ci.org/sammyne/secp256k1.png?branch=master)]
+(https://travis-ci.org/sammyne/secp256k1) [![Coverage Status]
+(https://coveralls.io/repos/sammyne/secp256k1/badge.png?branch=master)]
+(https://coveralls.io/r/sammyne/secp256k1?branch=master)
 
 Package btcec implements elliptic curve cryptography needed for working with
 Bitcoin (secp256k1 only for now). It is designed so that it may be used with the
@@ -22,32 +22,32 @@ use secp256k1 elliptic curve cryptography.
 
 ## Documentation
 
-[![GoDoc](https://godoc.org/github.com/btcsuite/btcec?status.png)]
-(http://godoc.org/github.com/btcsuite/btcec)
+[![GoDoc](https://godoc.org/github.com/sammyne/secp256k1?status.png)]
+(http://godoc.org/github.com/sammyne/secp256k1)
 
 Full `go doc` style documentation for the project can be viewed online without
 installing this package by using the GoDoc site
-[here](http://godoc.org/github.com/btcsuite/btcec).
+[here](http://godoc.org/github.com/sammyne/secp256k1).
 
 You can also view the documentation locally once the package is installed with
 the `godoc` tool by running `godoc -http=":6060"` and pointing your browser to
-http://localhost:6060/pkg/github.com/btcsuite/btcec
+http://localhost:6060/pkg/github.com/sammyne/secp256k1
 
 ## Installation
 
 ```bash
-$ go get github.com/btcsuite/btcec
+$ go get github.com/sammyne/secp256k1
 ```
 
 ## Examples
 
 * [Sign Message]
-  (http://godoc.org/github.com/btcsuite/btcec#example-package--SignMessage)  
+  (http://godoc.org/github.com/sammyne/secp256k1#example-package--SignMessage)  
   Demonstrates signing a message with a secp256k1 private key that is first
   parsed form raw bytes and serializing the generated signature.
 
 * [Verify Signature]
-  (http://godoc.org/github.com/btcsuite/btcec#example-package--VerifySignature)  
+  (http://godoc.org/github.com/sammyne/secp256k1#example-package--VerifySignature)  
   Demonstrates verifying a secp256k1 signature against a public key that is
   first parsed from raw bytes.  The signature is also parsed from raw bytes.
 
