@@ -3,7 +3,7 @@
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-package btcec
+package secp256k1
 
 // References:
 //   [HAC]: Handbook of Applied Cryptography Menezes, van Oorschot, Vanstone.

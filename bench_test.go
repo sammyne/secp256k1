@@ -2,12 +2,12 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package btcec_test
+package secp256k1_test
 
 import (
 	"testing"
 
-	"github.com/sammyne/secp256k1"
+	btcec "github.com/sammyne/secp256k1"
 )
 
 // BenchmarkAddJacobian benchmarks the secp256k1 curve addJacobian function with

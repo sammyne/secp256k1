@@ -17,7 +17,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/sammyne/secp256k1"
+	btcec "github.com/sammyne/secp256k1"
 )
 
 func main() {
@@ -45,7 +45,7 @@ func main() {
 	fmt.Fprintln(fi, "// Use of this source code is governed by an ISC")
 	fmt.Fprintln(fi, "// license that can be found in the LICENSE file.")
 	fmt.Fprintln(fi)
-	fmt.Fprintln(fi, "package btcec")
+	fmt.Fprintln(fi, "package secp256k1")
 	fmt.Fprintln(fi)
 	fmt.Fprintln(fi, "// Auto-generated file (see genprecomps.go)")
 	fmt.Fprintln(fi, "// DO NOT EDIT")

@@ -6,7 +6,7 @@
 // This build tag is set during go generate.
 // +build gensecp256k1
 
-package btcec
+package secp256k1
 
 import "encoding/binary"
 
@@ -23,7 +23,8 @@ func (curve *KoblitzCurve) getDoublingPoints() [][3]fieldVal {
 	// initialize px, py, pz to the Jacobian coordinates for the base point
 	px, py := curve.bigAffineToField(curve.Gx, curve.Gy)
 	pz := new(fieldVal).SetInt(1)
-	for i := 0; i < bitSize; i++ {
+	//for i := 0; i < bitSize; i++ {
+	for i := 0; i < curve.BitSize; i++ {
 		doublingPoints[i] = [3]fieldVal{*px, *py, *pz}
 		// P = 2*P
 		curve.doubleJacobian(px, py, pz, px, py, pz)
