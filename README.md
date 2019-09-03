@@ -73,3 +73,5 @@ signature perform the following:
 Package secp256k1 is licensed under the [copyfree](http://copyfree.org) ISC License
 except for secp256k1.go and secp256k1_test.go which is under the same license as Go.
 
+## TODO
+- catch up with that of [btcd/btcec](https://github.com/btcsuite/btcd/commits/master/btcec)
