@@ -6,6 +6,9 @@ btcec
 (https://coveralls.io/repos/sammyne/secp256k1/badge.png?branch=master)]
 (https://coveralls.io/r/sammyne/secp256k1?branch=master)
 
+[![ISC License](http://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/sammyne/secp256k1/blob/master/LICENSE) 
+[![GoDoc](https://godoc.org/github.com/sammyne/secp256k1?status.png)](http://godoc.org/github.com/sammyne/secp256k1)
+
 Package btcec implements elliptic curve cryptography needed for working with
 Bitcoin (secp256k1 only for now). It is designed so that it may be used with the
 standard crypto/ecdsa packages provided with go.  A comprehensive suite of test
@@ -21,9 +24,6 @@ designed so it can be used as a standalone package for any projects needing to
 use secp256k1 elliptic curve cryptography.
 
 ## Documentation
-
-[![GoDoc](https://godoc.org/github.com/sammyne/secp256k1?status.png)]
-(http://godoc.org/github.com/sammyne/secp256k1)
 
 Full `go doc` style documentation for the project can be viewed online without
 installing this package by using the GoDoc site
