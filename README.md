@@ -38,13 +38,11 @@ $ go get github.com/sammyne/secp256k1
 
 ## Examples
 
-* [Sign Message]
-  (http://godoc.org/github.com/sammyne/secp256k1#example-package--SignMessage)  
+* [Sign Message](http://godoc.org/github.com/sammyne/secp256k1#example-package--SignMessage)  
   Demonstrates signing a message with a secp256k1 private key that is first
   parsed form raw bytes and serializing the generated signature.
 
-* [Verify Signature]
-  (http://godoc.org/github.com/sammyne/secp256k1#example-package--VerifySignature)  
+* [Verify Signature](http://godoc.org/github.com/sammyne/secp256k1#example-package--VerifySignature)  
   Demonstrates verifying a secp256k1 signature against a public key that is
   first parsed from raw bytes.  The signature is also parsed from raw bytes.
 
