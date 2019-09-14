@@ -46,6 +46,14 @@ $ go get github.com/sammyne/secp256k1
   Demonstrates verifying a secp256k1 signature against a public key that is
   first parsed from raw bytes.  The signature is also parsed from raw bytes.
 
+* [Encryption](http://godoc.org/github.com/sammyne/secp256k1#example-package--EncryptMessage)  
+  Demonstrates encrypting a message for a public key that is first parsed from
+  raw bytes, then decrypting it using the corresponding private key.
+
+ * [Decryption](http://godoc.org/github.com/sammyne/secp256k1#example-package--DecryptMessage)  
+  Demonstrates decrypting a message using a private key that is first parsed
+  from raw bytes.
+
 ## GPG Verification Key
 
 All official release tags are signed by Conformal so users can ensure the code
