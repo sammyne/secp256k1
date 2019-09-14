@@ -11,7 +11,7 @@ import (
 	"math/big"
 	"testing"
 
-	btcec "github.com/sammyne/secp256k1"
+	"github.com/sammyne/secp256k1"
 )
 
 type signatureTest struct {
@@ -317,9 +317,9 @@ func TestSignatures(t *testing.T) {
 	for _, test := range signatureTests {
 		var err error
 		if test.der {
-			_, err = btcec.ParseDERSignature(test.sig, btcec.S256())
+			_, err = secp256k1.ParseDERSignature(test.sig, secp256k1.S256())
 		} else {
-			_, err = btcec.ParseSignature(test.sig, btcec.S256())
+			_, err = secp256k1.ParseSignature(test.sig, secp256k1.S256())
 		}
 		if err != nil {
 			if test.isValid {
@@ -341,14 +341,14 @@ func TestSignatures(t *testing.T) {
 func TestSignatureSerialize(t *testing.T) {
 	tests := []struct {
 		name     string
-		ecsig    *btcec.Signature
+		ecsig    *secp256k1.Signature
 		expected []byte
 	}{
 		// signature from bitcoin blockchain tx
 		// 0437cd7f8525ceed2324359c2d0ba26006d92d85
 		{
 			"valid 1 - r and s most significant bits are zero",
-			&btcec.Signature{
+			&secp256k1.Signature{
 				R: fromHex("4e45e16932b8af514961a1d3a1a25fdf3f4f7732e9d624c6c61548ab5fb8cd41"),
 				S: fromHex("181522ec8eca07de4860a4acdd12909d831cc56cbbac4622082221a8768d1d09"),
 			},
@@ -368,7 +368,7 @@ func TestSignatureSerialize(t *testing.T) {
 		// cb00f8a0573b18faa8c4f467b049f5d202bf1101d9ef2633bc611be70376a4b4
 		{
 			"valid 2 - r most significant bit is one",
-			&btcec.Signature{
+			&secp256k1.Signature{
 				R: fromHex("0082235e21a2300022738dabb8e1bbd9d19cfb1e7ab8c30a23b0afbb8d178abcf3"),
 				S: fromHex("24bf68e256c534ddfaf966bf908deb944305596f7bdcc38d69acad7f9c868724"),
 			},
@@ -388,9 +388,9 @@ func TestSignatureSerialize(t *testing.T) {
 		// fda204502a3345e08afd6af27377c052e77f1fefeaeb31bdd45f1e1237ca5470
 		{
 			"valid 3 - s most significant bit is one",
-			&btcec.Signature{
+			&secp256k1.Signature{
 				R: fromHex("1cadddc2838598fee7dc35a12b340c6bde8b389f7bfd19a1252a17c4b5ed2d71"),
-				S: new(big.Int).Add(fromHex("00c1a251bbecb14b058a8bd77f65de87e51c47e95904f4c0e9d52eddc21c1415ac"), btcec.S256().N),
+				S: new(big.Int).Add(fromHex("00c1a251bbecb14b058a8bd77f65de87e51c47e95904f4c0e9d52eddc21c1415ac"), secp256k1.S256().N),
 			},
 			[]byte{
 				0x30, 0x45, 0x02, 0x20, 0x1c, 0xad, 0xdd, 0xc2,
@@ -406,7 +406,7 @@ func TestSignatureSerialize(t *testing.T) {
 		},
 		{
 			"zero signature",
-			&btcec.Signature{
+			&secp256k1.Signature{
 				R: big.NewInt(0),
 				S: big.NewInt(0),
 			},
@@ -424,19 +424,19 @@ func TestSignatureSerialize(t *testing.T) {
 	}
 }
 
-func testSignCompact(t *testing.T, tag string, curve *btcec.KoblitzCurve,
+func testSignCompact(t *testing.T, tag string, curve *secp256k1.KoblitzCurve,
 	data []byte, isCompressed bool) {
-	tmp, _ := btcec.NewPrivateKey(curve)
-	priv := (*btcec.PrivateKey)(tmp)
+	tmp, _ := secp256k1.NewPrivateKey(curve)
+	priv := (*secp256k1.PrivateKey)(tmp)
 
 	hashed := []byte("testing")
-	sig, err := btcec.SignCompact(curve, priv, hashed, isCompressed)
+	sig, err := secp256k1.SignCompact(curve, priv, hashed, isCompressed)
 	if err != nil {
 		t.Errorf("%s: error signing: %s", tag, err)
 		return
 	}
 
-	pk, wasCompressed, err := btcec.RecoverCompact(curve, sig, hashed)
+	pk, wasCompressed, err := secp256k1.RecoverCompact(curve, sig, hashed)
 	if err != nil {
 		t.Errorf("%s: error recovering: %s", tag, err)
 		return
@@ -460,7 +460,7 @@ func testSignCompact(t *testing.T, tag string, curve *btcec.KoblitzCurve,
 		sig[0] += 4
 	}
 
-	pk, wasCompressed, err = btcec.RecoverCompact(curve, sig, hashed)
+	pk, wasCompressed, err = secp256k1.RecoverCompact(curve, sig, hashed)
 	if err != nil {
 		t.Errorf("%s: error recovering (2): %s", tag, err)
 		return
@@ -488,6 +488,6 @@ func TestSignCompact(t *testing.T) {
 			continue
 		}
 		compressed := i%2 != 0
-		testSignCompact(t, name, btcec.S256(), data, compressed)
+		testSignCompact(t, name, secp256k1.S256(), data, compressed)
 	}
 }

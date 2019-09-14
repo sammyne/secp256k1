@@ -8,7 +8,7 @@ import (
 	"bytes"
 	"testing"
 
-	btcec "github.com/sammyne/secp256k1"
+	"github.com/sammyne/secp256k1"
 )
 
 func TestPrivKeys(t *testing.T) {
@@ -28,10 +28,10 @@ func TestPrivKeys(t *testing.T) {
 	}
 
 	for _, test := range tests {
-		priv, pub := btcec.PrivKeyFromBytes(btcec.S256(), test.key)
+		priv, pub := secp256k1.PrivKeyFromBytes(secp256k1.S256(), test.key)
 
-		_, err := btcec.ParsePubKey(
-			pub.SerializeUncompressed(), btcec.S256())
+		_, err := secp256k1.ParsePubKey(
+			pub.SerializeUncompressed(), secp256k1.S256())
 		if err != nil {
 			t.Errorf("%s privkey: %v", test.name, err)
 			continue

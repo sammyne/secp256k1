@@ -9,7 +9,7 @@ import (
 	"encoding/hex"
 	"fmt"
 
-	btcec "github.com/sammyne/secp256k1"
+	"github.com/sammyne/secp256k1"
 )
 
 // This example demonstrates signing a message with a secp256k1 private key that
@@ -22,7 +22,7 @@ func Example_signMessage() {
 		fmt.Println(err)
 		return
 	}
-	privKey, pubKey := btcec.PrivKeyFromBytes(btcec.S256(), pkBytes)
+	privKey, pubKey := secp256k1.PrivKeyFromBytes(secp256k1.S256(), pkBytes)
 
 	// Sign a message using the private key.
 	message := "test message"
@@ -58,7 +58,7 @@ func Example_verifySignature() {
 		fmt.Println(err)
 		return
 	}
-	pubKey, err := btcec.ParsePubKey(pubKeyBytes, btcec.S256())
+	pubKey, err := secp256k1.ParsePubKey(pubKeyBytes, secp256k1.S256())
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -72,7 +72,7 @@ func Example_verifySignature() {
 		fmt.Println(err)
 		return
 	}
-	signature, err := btcec.ParseSignature(sigBytes, btcec.S256())
+	signature, err := secp256k1.ParseSignature(sigBytes, secp256k1.S256())
 	if err != nil {
 		fmt.Println(err)
 		return

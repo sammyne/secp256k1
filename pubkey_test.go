@@ -9,7 +9,7 @@ import (
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	btcec "github.com/sammyne/secp256k1"
+	"github.com/sammyne/secp256k1"
 )
 
 type pubKeyTest struct {
@@ -34,7 +34,7 @@ var pubKeyTests = []pubKeyTest{
 			0xb4, 0x12, 0xa3,
 		},
 		isValid: true,
-		format:  btcec.TstPubkeyUncompressed,
+		format:  secp256k1.TstPubkeyUncompressed,
 	},
 	{
 		name: "uncompressed x changed",
@@ -87,7 +87,7 @@ var pubKeyTests = []pubKeyTest{
 			0xb4, 0x12, 0xa3,
 		},
 		isValid: true,
-		format:  btcec.TstPubkeyHybrid,
+		format:  secp256k1.TstPubkeyHybrid,
 	},
 	{
 		name: "uncompressed as hybrid wrong",
@@ -111,7 +111,7 @@ var pubKeyTests = []pubKeyTest{
 			0xa9, 0xa1, 0xf4, 0x80, 0x9d, 0x3b, 0x4d,
 		},
 		isValid: true,
-		format:  btcec.TstPubkeyCompressed,
+		format:  secp256k1.TstPubkeyCompressed,
 	},
 	// from tx fdeb8e72524e8dab0da507ddbaf5f88fe4a933eb10a66bc4745bb0aa11ea393c
 	{
@@ -122,7 +122,7 @@ var pubKeyTests = []pubKeyTest{
 			0x7f, 0x5b, 0x2a, 0x4b, 0x7d, 0x44, 0x8e,
 		},
 		isValid: true,
-		format:  btcec.TstPubkeyCompressed,
+		format:  secp256k1.TstPubkeyCompressed,
 	},
 	{
 		name: "compressed claims uncompressed (ybit = 0)",
@@ -203,7 +203,7 @@ var pubKeyTests = []pubKeyTest{
 
 func TestPubKeys(t *testing.T) {
 	for _, test := range pubKeyTests {
-		pk, err := btcec.ParsePubKey(test.key, btcec.S256())
+		pk, err := secp256k1.ParsePubKey(test.key, secp256k1.S256())
 		if err != nil {
 			if test.isValid {
 				t.Errorf("%s pubkey failed when shouldn't %v",
@@ -218,12 +218,12 @@ func TestPubKeys(t *testing.T) {
 		}
 		var pkStr []byte
 		switch test.format {
-		case btcec.TstPubkeyUncompressed:
-			pkStr = (*btcec.PublicKey)(pk).SerializeUncompressed()
-		case btcec.TstPubkeyCompressed:
-			pkStr = (*btcec.PublicKey)(pk).SerializeCompressed()
-		case btcec.TstPubkeyHybrid:
-			pkStr = (*btcec.PublicKey)(pk).SerializeHybrid()
+		case secp256k1.TstPubkeyUncompressed:
+			pkStr = (*secp256k1.PublicKey)(pk).SerializeUncompressed()
+		case secp256k1.TstPubkeyCompressed:
+			pkStr = (*secp256k1.PublicKey)(pk).SerializeCompressed()
+		case secp256k1.TstPubkeyHybrid:
+			pkStr = (*secp256k1.PublicKey)(pk).SerializeHybrid()
 		}
 		if !bytes.Equal(test.key, pkStr) {
 			t.Errorf("%s pubkey: serialized keys do not match.",

@@ -17,7 +17,7 @@ import (
 	"log"
 	"os"
 
-	btcec "github.com/sammyne/secp256k1"
+	"github.com/sammyne/secp256k1"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func main() {
 	defer fi.Close()
 
 	// Compress the serialized byte points.
-	serialized := btcec.S256().SerializedBytePoints()
+	serialized := secp256k1.S256().SerializedBytePoints()
 	var compressed bytes.Buffer
 	w := zlib.NewWriter(&compressed)
 	if _, err := w.Write(serialized); err != nil {
