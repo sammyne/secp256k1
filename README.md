@@ -20,20 +20,10 @@ Although it was primarily written for btcd, this package has intentionally been
 designed so it can be used as a standalone package for any projects needing to
 use secp256k1 elliptic curve cryptography.
 
-## Documentation
-
-Full `go doc` style documentation for the project can be viewed online without
-installing this package by using the GoDoc site
-[here](http://godoc.org/github.com/sammyne/secp256k1).
-
-You can also view the documentation locally once the package is installed with
-the `godoc` tool by running `godoc -http=":6060"` and pointing your browser to
-http://localhost:6060/pkg/github.com/sammyne/secp256k1
-
 ## Installation
 
 ```bash
-$ go get github.com/sammyne/secp256k1
+$ go get -u github.com/sammyne/secp256k1
 ```
 
 ## Examples
