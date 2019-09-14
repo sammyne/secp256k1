@@ -11,8 +11,8 @@ Bitcoin (secp256k1 only for now). It is designed so that it may be used with the
 standard crypto/ecdsa packages provided with go.  A comprehensive suite of test
 is provided to ensure proper functionality.  Package secp256k1 was originally based
 on work from ThePiachu which is licensed under the same terms as Go, but it has
-signficantly diverged since then.  The Conformal original is licensed under the
-liberal ISC license.
+signficantly diverged since then.  The btcsuite developers original is licensed
+under the liberal ISC license.
 
 This package is one of the core packages from btcd, an alternative full-node
 implementation of bitcoin which is under active development by Conformal.
@@ -49,8 +49,8 @@ $ go get github.com/sammyne/secp256k1
 ## GPG Verification Key
 
 All official release tags are signed by Conformal so users can ensure the code
-has not been tampered with and is coming from Conformal.  To verify the
-signature perform the following:
+has not been tampered with and is coming from the btcsuite developers.  To 
+verify the signature perform the following:
 
 - Download the public key from the Conformal website at
   https://opensource.conformal.com/GIT-GPG-KEY-conformal.txt
