@@ -1,15 +1,14 @@
-// Copyright (c) 2013-2014 The btcsuite developers
+// Copyright (c) 2013-2016 The btcsuite developers
 // Use of this source code is governed by an ISC
 // license that can be found in the LICENSE file.
 
-package secp256k1_test
+package secp256k1
 
 import (
 	"bytes"
 	"testing"
 
 	"github.com/davecgh/go-spew/spew"
-	"github.com/sammyne/secp256k1"
 )
 
 type pubKeyTest struct {
@@ -34,7 +33,7 @@ var pubKeyTests = []pubKeyTest{
 			0xb4, 0x12, 0xa3,
 		},
 		isValid: true,
-		format:  secp256k1.TstPubkeyUncompressed,
+		format:  pubkeyUncompressed,
 	},
 	{
 		name: "uncompressed x changed",
@@ -87,7 +86,7 @@ var pubKeyTests = []pubKeyTest{
 			0xb4, 0x12, 0xa3,
 		},
 		isValid: true,
-		format:  secp256k1.TstPubkeyHybrid,
+		format:  pubkeyHybrid,
 	},
 	{
 		name: "uncompressed as hybrid wrong",
@@ -111,7 +110,7 @@ var pubKeyTests = []pubKeyTest{
 			0xa9, 0xa1, 0xf4, 0x80, 0x9d, 0x3b, 0x4d,
 		},
 		isValid: true,
-		format:  secp256k1.TstPubkeyCompressed,
+		format:  pubkeyCompressed,
 	},
 	// from tx fdeb8e72524e8dab0da507ddbaf5f88fe4a933eb10a66bc4745bb0aa11ea393c
 	{
@@ -122,7 +121,7 @@ var pubKeyTests = []pubKeyTest{
 			0x7f, 0x5b, 0x2a, 0x4b, 0x7d, 0x44, 0x8e,
 		},
 		isValid: true,
-		format:  secp256k1.TstPubkeyCompressed,
+		format:  pubkeyCompressed,
 	},
 	{
 		name: "compressed claims uncompressed (ybit = 0)",
@@ -210,14 +209,14 @@ var pubKeyTests = []pubKeyTest{
 			0xa6, 0x85, 0x54, 0x19, 0x9c, 0x47, 0xd0, 0x8f, 0xfb,
 			0x10, 0xd4, 0xb8,
 		},
-		format:  secp256k1.TstPubkeyHybrid,
+		format:  pubkeyHybrid,
 		isValid: true,
 	},
 }
 
 func TestPubKeys(t *testing.T) {
 	for _, test := range pubKeyTests {
-		pk, err := secp256k1.ParsePubKey(test.key, secp256k1.S256())
+		pk, err := ParsePubKey(test.key, S256())
 		if err != nil {
 			if test.isValid {
 				t.Errorf("%s pubkey failed when shouldn't %v",
@@ -232,12 +231,12 @@ func TestPubKeys(t *testing.T) {
 		}
 		var pkStr []byte
 		switch test.format {
-		case secp256k1.TstPubkeyUncompressed:
-			pkStr = (*secp256k1.PublicKey)(pk).SerializeUncompressed()
-		case secp256k1.TstPubkeyCompressed:
-			pkStr = (*secp256k1.PublicKey)(pk).SerializeCompressed()
-		case secp256k1.TstPubkeyHybrid:
-			pkStr = (*secp256k1.PublicKey)(pk).SerializeHybrid()
+		case pubkeyUncompressed:
+			pkStr = (*PublicKey)(pk).SerializeUncompressed()
+		case pubkeyCompressed:
+			pkStr = (*PublicKey)(pk).SerializeCompressed()
+		case pubkeyHybrid:
+			pkStr = (*PublicKey)(pk).SerializeHybrid()
 		}
 		if !bytes.Equal(test.key, pkStr) {
 			t.Errorf("%s pubkey: serialized keys do not match.",
@@ -249,25 +248,25 @@ func TestPubKeys(t *testing.T) {
 }
 
 func TestPublicKeyIsEqual(t *testing.T) {
-	pubKey1, err := secp256k1.ParsePubKey(
+	pubKey1, err := ParsePubKey(
 		[]byte{0x03, 0x26, 0x89, 0xc7, 0xc2, 0xda, 0xb1, 0x33,
 			0x09, 0xfb, 0x14, 0x3e, 0x0e, 0x8f, 0xe3, 0x96, 0x34,
 			0x25, 0x21, 0x88, 0x7e, 0x97, 0x66, 0x90, 0xb6, 0xb4,
 			0x7f, 0x5b, 0x2a, 0x4b, 0x7d, 0x44, 0x8e,
 		},
-		secp256k1.S256(),
+		S256(),
 	)
 	if err != nil {
 		t.Fatalf("failed to parse raw bytes for pubKey1: %v", err)
 	}
 
-	pubKey2, err := secp256k1.ParsePubKey(
+	pubKey2, err := ParsePubKey(
 		[]byte{0x02, 0xce, 0x0b, 0x14, 0xfb, 0x84, 0x2b, 0x1b,
 			0xa5, 0x49, 0xfd, 0xd6, 0x75, 0xc9, 0x80, 0x75, 0xf1,
 			0x2e, 0x9c, 0x51, 0x0f, 0x8e, 0xf5, 0x2b, 0xd0, 0x21,
 			0xa9, 0xa1, 0xf4, 0x80, 0x9d, 0x3b, 0x4d,
 		},
-		secp256k1.S256(),
+		S256(),
 	)
 	if err != nil {
 		t.Fatalf("failed to parse raw bytes for pubKey2: %v", err)
@@ -281,5 +280,17 @@ func TestPublicKeyIsEqual(t *testing.T) {
 	if pubKey1.IsEqual(pubKey2) {
 		t.Fatalf("value of IsEqual is incorrect, %v is not "+
 			"equal to %v", pubKey1, pubKey2)
+	}
+}
+
+func TestIsCompressed(t *testing.T) {
+	for _, test := range pubKeyTests {
+		isCompressed := IsCompressedPubKey(test.key)
+		wantCompressed := (test.format == pubkeyCompressed)
+		if isCompressed != wantCompressed {
+			t.Fatalf("%s (%x) pubkey: unexpected compressed result, "+
+				"got %v, want %v", test.name, test.key,
+				isCompressed, wantCompressed)
+		}
 	}
 }
